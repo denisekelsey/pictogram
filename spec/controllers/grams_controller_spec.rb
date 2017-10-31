@@ -9,6 +9,8 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
+/--- New --/
+
   describe "grams#new action" do
     it "should require users to be logged in" do
       get :new
@@ -23,6 +25,8 @@ RSpec.describe GramsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
+/--- Create --/
 
   describe "grams#create action" do
     it "should require users to be logged in" do
@@ -52,6 +56,8 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
+/--- Show --/
+
   describe "grams#show action" do
     it "should successfully show the page if the gram is found" do
       gram = FactoryBot.create(:gram)
@@ -66,6 +72,8 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
+/--- Edit --/
+
   describe "grams#edit action" do
     it "should successfully show the edit form if the gram is found" do
       gram = FactoryBot.create(:gram)
@@ -78,6 +86,8 @@ RSpec.describe GramsController, type: :controller do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+/--- Update --/
 
   describe "grams#update action" do
     it "should allow users to successfully update grams" do
@@ -102,4 +112,20 @@ RSpec.describe GramsController, type: :controller do
     end
   end
   
+/--- Destroy --/
+
+  describe "grams#destroy action" do
+    it "should allow a user to destroy a gram" do
+      gram = FactoryBot.create(:gram)
+      delete :destroy, params: { id: gram.id }
+      expect(response).to redirect_to root_path
+      gram = Gram.find_by_id(gram.id)
+      expect(gram).to eq nil
+    end
+
+    it "should return a 404 error if the gram is not found" do
+      delete :destroy, params: { id: 'tacocat' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
